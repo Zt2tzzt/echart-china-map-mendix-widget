@@ -5,8 +5,9 @@ import * as echarts from "echarts/core";
 import { MapChart, EffectScatterChart } from "echarts/charts";
 import { TooltipComponent } from "echarts/components";
 import { CanvasRenderer } from "echarts/renderers";
-// type ECOption = echarts.ComposeOption<MapSeriesOption | TooltipComponentOption>;
+
 echarts.use([MapChart, TooltipComponent, CanvasRenderer, EffectScatterChart]);
+// type ECOption = echarts.ComposeOption<MapSeriesOption | TooltipComponentOption>;
 interface DataItem {
     name: string;
     value: number;
@@ -25,7 +26,7 @@ interface CoverData {
 
 export class HelloWorldSample extends Component<HelloWorldSampleProps> {
     mapName = "中国";
-    myChart: any;
+    echartInstance: any;
     dataProvince: DataItem[] = /* [
         { name: "黑龙江", value: 9 },
         { name: "吉林", value: 12 },
@@ -68,29 +69,40 @@ export class HelloWorldSample extends Component<HelloWorldSampleProps> {
         { name: "广西", value: 59 },
         { name: "海南", value: 14 }
     ];
-    geoCoordMap: GeoCoordMap = {};
+    // 1.先拿到地图的 geo json 对象
+    geoCoordMap: GeoCoordMap = china_geojson.features.reduce((accumulate: any, currentValue) => {
+        // 地区名称， 地区经纬度
+        accumulate[currentValue.properties.name] = currentValue.properties.cp;
+        return accumulate;
+    }, {});
 
     componentDidMount(): void {
+        const chartDom = document.getElementById("ztmap");
+        console.log("chartDom:", chartDom);
         echarts.registerMap(this.mapName, china_geojson);
-        this.myChart = echarts.init(document.getElementById("ztmap") as HTMLDivElement);
+
+        this.echartInstance = echarts.getInstanceByDom(chartDom as HTMLDivElement);
+        console.log("this.echartInstance:", this.echartInstance);
+        if (!this.echartInstance) {
+            this.echartInstance = echarts.init(chartDom as HTMLDivElement);
+        }
+        console.log("this.echartInstance:", this.echartInstance);
 
         // 获取地图数据
-        this.myChart.showLoading();
-
-        // 1.先拿到地图的 geo json 对象
-        this.geoCoordMap = china_geojson.features.reduce((accumulate: any, currentValue) => {
-            // 地区名称， 地区经纬度
-            accumulate[currentValue.properties.name] = currentValue.properties.cp;
-            return accumulate;
-        }, {});
-
-        this.myChart.hideLoading();
         console.log("geoCoordMap=>", this.geoCoordMap);
 
-        this.myChart.setOption(this.getOption());
+        // this.echartInstance.showLoading();
+        this.echartInstance.setOption(this.getOption());
+        // this.echartInstance.hideLoading();
     }
+
     componentDidUpdate(): void {
-        this.myChart.setOption(this.getOption());
+        this.echartInstance.setOption(this.getOption());
+    }
+
+    componentWillUnmount(): void {
+        console.log("componentWillUnmount~");
+        echarts.dispose(document.getElementById("ztmap") as HTMLDivElement);
     }
 
     coverData(data: DataItem[]): CoverData[] {
@@ -116,6 +128,8 @@ export class HelloWorldSample extends Component<HelloWorldSampleProps> {
             geo: {
                 // 注册一个地理坐标系组件( 给散点图用 )
                 map: this.mapName,
+                layoutCenter: ["50%", "50%"],
+                layoutSize: 600,
                 roam: false,
                 label: { show: false },
                 aspectScale: 0.75, // 缩放地图
@@ -185,7 +199,7 @@ export class HelloWorldSample extends Component<HelloWorldSampleProps> {
         return (
             <div className="widget-hello-world">
                 {/* Hello {this.props.sampleText} */}
-                <div id="ztmap" style={{ width: "800px", height: "600px" }}></div>
+                <div id="ztmap" style={{ width: "830px", height: "480px" }}></div>
             </div>
         );
     }
