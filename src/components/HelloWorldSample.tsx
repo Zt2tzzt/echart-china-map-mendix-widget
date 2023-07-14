@@ -128,9 +128,9 @@ export class HelloWorldSample extends Component<HelloWorldSampleProps> {
             geo: {
                 // 注册一个地理坐标系组件( 给散点图用 )
                 map: this.mapName,
+                roam: false,
                 layoutCenter: ["50%", "50%"],
                 layoutSize: 600,
-                roam: false,
                 label: { show: false },
                 aspectScale: 0.75, // 缩放地图
                 itemStyle: {
@@ -148,6 +148,7 @@ export class HelloWorldSample extends Component<HelloWorldSampleProps> {
                     type: "map",
                     map: this.mapName,
                     data: this.dataProvince,
+                    geoIndex: 0,
                     // 地图样式
                     itemStyle: {
                         areaColor: "#091220",
