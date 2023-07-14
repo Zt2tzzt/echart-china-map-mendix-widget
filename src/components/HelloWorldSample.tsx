@@ -185,7 +185,7 @@ export class HelloWorldSample extends Component<HelloWorldSampleProps> {
         return (
             <div className="widget-hello-world">
                 {/* Hello {this.props.sampleText} */}
-                <div id="ztmap" style={{ width: "100%", height: "600px" }}></div>
+                <div id="ztmap" style={{ width: "800px", height: "600px" }}></div>
             </div>
         );
     }
