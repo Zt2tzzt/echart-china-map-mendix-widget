@@ -1,4 +1,4 @@
-import { Component, ReactNode, createElement } from "react";
+import { Component, ReactNode, createElement, createRef } from "react";
 
 import china_geojson from "./china";
 import * as echarts from "echarts/core";
@@ -75,9 +75,10 @@ export class HelloWorldSample extends Component<HelloWorldSampleProps> {
         accumulate[currentValue.properties.name] = currentValue.properties.cp;
         return accumulate;
     }, {});
+    ztmapRef = createRef<HTMLDivElement>();
 
     componentDidMount(): void {
-        const chartDom = document.getElementById("ztmap");
+        const chartDom = this.ztmapRef.current;
         console.log("chartDom:", chartDom);
         echarts.registerMap(this.mapName, china_geojson);
 
@@ -130,12 +131,12 @@ export class HelloWorldSample extends Component<HelloWorldSampleProps> {
                 map: this.mapName,
                 roam: false,
                 layoutCenter: ["50%", "50%"],
-                layoutSize: 600,
-                label: { show: false },
-                aspectScale: 0.75, // 缩放地图
+                layoutSize: 500,
+                label: { show: true },
+                // aspectScale: 0.75, // 缩放地图
                 itemStyle: {
                     areaColor: "#091220", // 地图区域的颜色。
-                    borderColor: "#b6a873" // 图形的描边颜色。 #fa8c16
+                    borderColor: "#8a877e" // 图形的描边颜色。 #fa8c16
                 },
                 emphasis: {
                     itemStyle: { areaColor: "#373e4a" },
@@ -198,9 +199,10 @@ export class HelloWorldSample extends Component<HelloWorldSampleProps> {
 
     render(): ReactNode {
         return (
-            <div className="widget-hello-world">
+            <div className="widget-hello-world" style={{ width: "100%", height: "100%" }}>
                 {/* Hello {this.props.sampleText} */}
-                <div id="ztmap" style={{ width: "830px", height: "480px" }}></div>
+                一样
+                <div id="ztmap" style={{ width: "100%", height: "100%" }} ref={this.ztmapRef}></div>
             </div>
         );
     }
