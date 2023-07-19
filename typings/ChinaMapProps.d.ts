@@ -4,13 +4,17 @@
  * @author Mendix Widgets Framework Team
  */
 import { CSSProperties } from "react";
+import { ListValue, ListAttributeValue } from "mendix";
+import { Big } from "big.js";
 
 export interface ChinaMapContainerProps {
     name: string;
     class: string;
     style?: CSSProperties;
     tabIndex?: number;
-    sampleText: string;
+    provincesDatasource?: ListValue;
+    provincesLabelAttribute?: ListAttributeValue<string>;
+    provincesValueAttribute?: ListAttributeValue<Big>;
 }
 
 export interface ChinaMapPreviewProps {
@@ -22,5 +26,7 @@ export interface ChinaMapPreviewProps {
     style: string;
     styleObject?: CSSProperties;
     readOnly: boolean;
-    sampleText: string;
+    provincesDatasource: {} | { caption: string } | { type: string } | null;
+    provincesLabelAttribute: string;
+    provincesValueAttribute: string;
 }
