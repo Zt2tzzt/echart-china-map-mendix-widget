@@ -142,8 +142,8 @@ export class ChinaMap extends Component<ChinaMapContainerProps> {
                 // 注册一个地理坐标系组件( 给散点图用 )
                 map: this.mapName,
                 roam: false,
-                // layoutCenter: ["20%", "60%"],
-                // layoutSize: 100,
+                layoutCenter: ["50%", "50%"],
+                layoutSize: "120%",
                 label: { show: true, color: "#8a877e" },
                 // aspectScale: 1.5, // 缩放地图
                 itemStyle: {
