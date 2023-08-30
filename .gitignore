@@ -1,4 +1,3 @@
-D:\\Workshop\\Mendix_Studio\\ChainMapWidget/
 .DS_Store
 .idea
 .vscode
@@ -18,3 +17,5 @@ mendixProject
 **/screenshot-results
 **/tests/testProject
 **/artifacts
+widgets
+deployment
